@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="https://cdn.flexmonster.com/flexmonster.js"></script>
+<div id="pivot"></div>
+<div id="pivot_chart"></div>
+<script type="text/javascript">
+    var pivot = new Flexmonster({
+    container: "#pivot",
+    componentFolder: "https://cdn.flexmonster.com/",
+    licenseKey: "Z7Q2-XC1A27-2W4725-09670M",
+    height: 600,
+    toolbar: true,
+    report: {
+    "dataSource": {
+        "type": "api",
+        "url": "http://localhost:9204/mongo",
+        "index": "marketing",
+        "mapping": {
+                "Traffic": {
+                    "type": "string"
+                },
+                "Country": {
+                    "type": "string"
+                },
+                "Source": {
+                    "type": "string"
+                },
+                "Clicks": {
+                    "type": "number"
+                },
+                "Campaign Cost": {
+                    "type": "number"
+                },
+                "CPC": {
+                    "type": "number"
+                },
+                "Users": {
+                    "type": "number"
+                },
+                "Sessions": {
+                    "type": "number"
+                },
+                "Bounce Rate": {
+                    "type": "number"
+                },
+                "Leads": {
+                    "type": "number"
+                },
+                "Opportunities": {
+                    "type": "number"
+                },
+                "Sales": {
+                    "type": "number"
+                },
+                "Date": {
+                    "type": "date string"
+                },
+                "Purchase Cost": {
+                    "type": "number"
+                }
+            }
+    },
+    "slice": {
+        "reportFilters": [
+            {
+                "uniqueName": "Traffic"
+            }
+        ],
+        "rows": [
+            {
+                "uniqueName": "Country"
+            }
+        ],
+        "columns": [
+            {
+                "uniqueName": "Source"
+            },
+            {
+                "uniqueName": "[Measures]"
+            }
+        ],
+        "measures": [
+            {
+                "uniqueName": "Sales",
+                "aggregation": "sum",
+                "format": "-10kus1m85vus00"
+            },
+            {
+                "uniqueName": "Clicks",
+                "aggregation": "sum"
+            }
+        ]
+    },
+    "options": {
+        "grid": {
+            "showTotals": "rows",
+            "showGrandTotals": "columns"
+        }
+    },
+    "conditions": [
+        {
+            "formula": "#value < 100",
+            "measure": "Sales",
+            "format": {
+                "backgroundColor": "#e03c25",
+                "color": "#FFFFFF",
+                "fontFamily": "Arial",
+                "fontSize": "12px"
+            }
+        },
+        {
+            "formula": "#value > 500",
+            "measure": "Sales",
+            "format": {
+                "backgroundColor": "#3caf74",
+                "color": "#FFFFFF",
+                "fontFamily": "Arial",
+                "fontSize": "12px"
+            }
+        }
+    ],
+    "formats": [
+        {
+            "name": "-10kus1m85vus00",
+            "currencySymbol": "$"
+        }
+    ]
+}
+});
+var pivot_chart = new Flexmonster({
+    container: "#pivot_chart",
+    componentFolder: "https://cdn.flexmonster.com/",
+    licenseKey: "Z7Q2-XC1A27-2W4725-09670M",
+    height: 600,
+    //toolbar: true,
+    report: {
+        "dataSource": {
+            "type": "api",
+            "url": "http://localhost:9204/mongo",
+            "index": "marketing",
+            "mapping": {
+                "Traffic": {
+                    "type": "string"
+                },
+                "Country": {
+                    "type": "string"
+                },
+                "Source": {
+                    "type": "string"
+                },
+                "Clicks": {
+                    "type": "number"
+                },
+                "Campaign Cost": {
+                    "type": "number"
+                },
+                "CPC": {
+                    "type": "number"
+                },
+                "Users": {
+                    "type": "number"
+                },
+                "Sessions": {
+                    "type": "number"
+                },
+                "Bounce Rate": {
+                    "type": "number"
+                },
+                "Leads": {
+                    "type": "number"
+                },
+                "Opportunities": {
+                    "type": "number"
+                },
+                "Sales": {
+                    "type": "number"
+                },
+                "Date": {
+                    "type": "date string"
+                },
+                "Purchase Cost": {
+                    "type": "number"
+                }
+            }
+        },
+        "slice": {
+            "reportFilters": [
+                {
+                    "uniqueName": "Country"
+                }
+            ],
+            "rows": [{
+                "uniqueName": "Traffic"
+            }],
+            "columns": [
+                {
+                    "uniqueName": "[Measures]"
+                }
+            ],
+            "measures": [{
+                    "uniqueName": "Sales",
+                    "aggregation": "sum",
+                    "format": "-10kus1m85vus00"
+                },
+                {
+                    "uniqueName": "Clicks",
+                    "aggregation": "sum"
+                }
+            ]
+        },
+        "options": {
+            "viewType": "charts",
+            "grid": {
+                "showTotals": "rows",
+                "showGrandTotals": "columns"
+            },
+            "chart": {
+                "type": "pie"
+            }
+        },
+        "conditions": [{
+                "formula": "#value < 100",
+                "measure": "Sales",
+                "format": {
+                    "backgroundColor": "#e03c25",
+                    "color": "#FFFFFF",
+                    "fontFamily": "Arial",
+                    "fontSize": "12px"
+                }
+            },
+            {
+                "formula": "#value > 500",
+                "measure": "Sales",
+                "format": {
+                    "backgroundColor": "#3caf74",
+                    "color": "#FFFFFF",
+                    "fontFamily": "Arial",
+                    "fontSize": "12px"
+                }
+            }
+        ],
+        "formats": [{
+            "name": "-10kus1m85vus00",
+            "currencySymbol": "$"
+        }]
+    }
+});
+</script>
+{% endblock %}

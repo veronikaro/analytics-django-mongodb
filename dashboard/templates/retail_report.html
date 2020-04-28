@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="https://cdn.flexmonster.com/flexmonster.js"></script>
+<style>
+    #pivot_chart {
+    margin-top: 20px;
+    }
+</style>
+    <div id="pivot"></div>
+    <div id="pivot_chart"></div>
+    <script type="text/javascript">
+var pivot = new Flexmonster({
+    container: "#pivot",
+    componentFolder: "https://cdn.flexmonster.com/",
+    height: 600,
+    toolbar: true,
+    report: {
+        "dataSource": {
+            "type": "api",
+            "url": "http://localhost:9204/mongo",
+            "index": "transactions",
+            "mapping": {
+                "InvoiceNo": {
+                    "caption": "Invoice Number",
+                    "type": "string"
+                },
+                "StockCode": {
+                    "caption": "Stock Code",
+                    "type": "string"
+                },
+                "Description": {
+                    "type": "string"
+                },
+                "Quantity": {
+                    "type": "number"
+                },
+                "InvoiceDate": {
+                    "type": "string",
+                    "caption": "Invoice Date"
+                },
+                "UnitPrice": {
+                    "type": "number",
+                    "caption": "Unit Price"
+                },
+                "CustomerID": {
+                    "type": "string",
+                    "caption": "Customer ID"
+                },
+                "Country": {
+                    "type": "string"
+                }
+            }
+        },
+        "slice": {
+            "reportFilters": [{
+                    "uniqueName": "InvoiceDate"
+                },
+                {
+                    "uniqueName": "StockCode"
+                }
+            ],
+            "rows": [{
+                "uniqueName": "Country"
+            }],
+            "columns": [{
+                "uniqueName": "[Measures]"
+            }],
+            "measures": [{
+                    "uniqueName": "Quantity",
+                    "aggregation": "sum"
+                },
+                {
+                    "uniqueName": "UnitPrice",
+                    "aggregation": "sum"
+                }
+            ],
+            "sorting": {
+                "column": {
+                    "type": "desc",
+                    "tuple": [],
+                    "measure": {
+                        "uniqueName": "UnitPrice",
+                        "aggregation": "sum"
+                    }
+                }
+            }
+        },
+        "conditions": [{
+            "formula": "#value > 40000",
+            "measure": "UnitPrice",
+            "format": {
+                "backgroundColor": "#8BC34A",
+                "color": "#FFFFFF",
+                "fontFamily": "Arial",
+                "fontSize": "12px"
+            }
+        }],
+    }
+});
+var pivot_charts = new Flexmonster({
+    container: "#pivot_chart",
+    componentFolder: "https://cdn.flexmonster.com/",
+    height: 600,
+    //toolbar: true,
+    report: {
+        "dataSource": {
+            "type": "api",
+            "url": "http://localhost:9204/mongo",
+            "index": "transactions",
+            "mapping": {
+                "InvoiceNo": {
+                    "caption": "Invoice Number",
+                    "type": "string"
+                },
+                "StockCode": {
+                    "caption": "Stock Code",
+                    "type": "string"
+                },
+                "Description": {
+                    "type": "string"
+                },
+                "Quantity": {
+                    "type": "number"
+                },
+                "InvoiceDate": {
+                    "type": "string",
+                    "caption": "Invoice Date"
+                },
+                "UnitPrice": {
+                    "type": "number",
+                    "caption": "Unit Price"
+                },
+                "CustomerID": {
+                    "type": "string",
+                    "caption": "Customer ID"
+                },
+                "Country": {
+                    "type": "string"
+                }
+            }
+        },
+        "slice": {
+            "reportFilters": [{
+                    "uniqueName": "InvoiceDate"
+                },
+                {
+                    "uniqueName": "StockCode"
+                }
+            ],
+            "rows": [{
+                "uniqueName": "Country"
+            }],
+            "columns": [{
+                "uniqueName": "[Measures]"
+            }],
+            "measures": [{
+                    "uniqueName": "Quantity",
+                    "aggregation": "sum"
+                },
+                {
+                    "uniqueName": "UnitPrice",
+                    "aggregation": "sum"
+                }
+            ],
+            "sorting": {
+                "column": {
+                    "type": "desc",
+                    "tuple": [],
+                    "measure": {
+                        "uniqueName": "UnitPrice",
+                        "aggregation": "sum"
+                    }
+                }
+            },
+            "flatSort": [{
+                "uniqueName": "UnitPrice",
+                "sort": "desc"
+            }]
+        },
+        "options": {
+            "viewType": "charts",
+            "chart": {
+                "type": "bar_h",
+                "activeMeasure": {
+                    "uniqueName": "Quantity",
+                    "aggregation": "sum"
+                }
+            }
+        },
+        "conditions": [{
+            "formula": "#value > 40000",
+            "measure": "UnitPrice",
+            "format": {
+                "backgroundColor": "#8BC34A",
+                "color": "#FFFFFF",
+                "fontFamily": "Arial",
+                "fontSize": "12px"
+            }
+        }]
+    }
+});
+</script>
+{% endblock %}
